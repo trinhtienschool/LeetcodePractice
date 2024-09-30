@@ -89,11 +89,43 @@ public class BFSAlg {
         return result;
     }
 
+    /**
+     * Binary Tree Zigzag Level Order Traversal
+     * Link: https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/description/
+     * @param root
+     */
+    public static List<List<Integer>> zigzagLevelOrder(TreeNode root){
+       if(Objects.isNull(root)) return new ArrayList<>();
+       Queue<TreeNode> queue = new LinkedList<TreeNode>();
+       queue.add(root);
+       List<List<Integer>> result = new ArrayList<List<Integer>>();
+       boolean isLeft = false;
+      while(!queue.isEmpty()){
+          LinkedList<Integer> levels = new LinkedList<Integer>();
+          int size = queue.size();
+          for(int i=0; i<size; i++){
+              TreeNode node = queue.poll();
+              if(isLeft){
+                  levels.addFirst(node.val);
+              }else{
+                  levels.addLast(node.val);
+              }
+              if(Objects.nonNull(node.left)) queue.add(node.left);
+              if(Objects.nonNull(node.right)) queue.add(node.right);
+          }
+          isLeft = !isLeft;
+         result.add(levels);
+      }
+      return result;
+    }
+
     public static void main(String[] args) {
         Integer[] array = {3, 9, 20, null, null, 15, 7};
         TreeNode root = ArrayToTreeConvertor.convertTree(array);
 //        List<List<Integer>> result = levelOrder2(root);
-        List<List<Integer>> result = levelOrderBottom(root);
+//        List<List<Integer>> result = levelOrderBottom(root);
+        List<List<Integer>> result = zigzagLevelOrder(root);
         System.out.println(result);
+
     }
 }
